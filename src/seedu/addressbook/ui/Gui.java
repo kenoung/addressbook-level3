@@ -1,9 +1,12 @@
 package seedu.addressbook.ui;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import seedu.addressbook.logic.Logic;
+import seedu.addressbook.storage.StorageFile;
 import seedu.addressbook.Main;
 
 import java.io.File;
@@ -48,6 +51,7 @@ public class Gui {
         MainWindow mainWindow = loader.getController();
         mainWindow.setLogic(logic);
         mainWindow.setMainApp(mainApp);
+        mainWindow.setStage(stage);
         return mainWindow;
     }
 

@@ -5,11 +5,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import seedu.addressbook.commands.ExitCommand;
 import seedu.addressbook.logic.Logic;
+import seedu.addressbook.storage.StorageFile.InvalidStorageFilePathException;
+import seedu.addressbook.storage.StorageFile.StorageOperationException;
 import seedu.addressbook.commands.CommandResult;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +27,21 @@ public class MainWindow {
 
     private Logic logic;
     private Stoppable mainApp;
+    private Stage stage;
 
     public MainWindow(){
     }
 
+    public Stoppable getMainApp(){
+        return mainApp;
+    }
+
     public void setLogic(Logic logic){
         this.logic = logic;
+    }
+
+    public Logic getLogic(){
+        return logic;
     }
 
     public void setMainApp(Stoppable mainApp){
@@ -105,6 +119,30 @@ public class MainWindow {
      */
     private void display(String... messages) {
         outputConsole.setText(outputConsole.getText() + new Formatter().format(messages));
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    /**
+     * Called when the user clicks the save to... button. Opens a dialog to select
+     * a place to store data.
+     * @throws InvalidStorageFilePathException
+     * @throws StorageOperationException
+     */
+    @FXML
+    private void handleChooseDirectory() throws InvalidStorageFilePathException, StorageOperationException {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+
+        if (selectedDirectory != null) {
+            logic.setFilePath(selectedDirectory.getAbsolutePath());
+        }
     }
 
 }

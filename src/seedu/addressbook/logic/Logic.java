@@ -6,6 +6,8 @@ import seedu.addressbook.data.AddressBook;
 import seedu.addressbook.data.person.ReadOnlyPerson;
 import seedu.addressbook.parser.Parser;
 import seedu.addressbook.storage.StorageFile;
+import seedu.addressbook.storage.StorageFile.InvalidStorageFilePathException;
+import seedu.addressbook.storage.StorageFile.StorageOperationException;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class Logic {
 
 
+    private static final String STORAGE_FILE_NAME = "\\addressbook.txt";
     private StorageFile storage;
     private AddressBook addressBook;
 
@@ -95,5 +98,14 @@ public class Logic {
         if (personList.isPresent()) {
             lastShownList = personList.get();
         }
+    }
+
+    /** Passes the path to storage to set the new file path
+     * @throws InvalidStorageFilePathException
+     * @throws StorageOperationException */
+    public void setFilePath(String absolutePath) throws InvalidStorageFilePathException, StorageOperationException {
+        setStorage(new StorageFile(absolutePath + STORAGE_FILE_NAME));
+        setAddressBook(storage.load());
+        storage.save(addressBook);
     }
 }
